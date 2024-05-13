@@ -4,26 +4,27 @@ const destroyBtn = controls.querySelector('[data-destroy]');
 const boxesContainer = document.querySelector('#boxes');
 const input = controls.querySelector('input');
 
-createBtn.addEventListener('click', createBoxes);
+createBtn.addEventListener('click', () => createBoxes(input.value));
 destroyBtn.addEventListener('click', destroyBoxes);
 
-function createBoxes() {
-  const amount = input.value;
-  if (amount < 1 || amount > 100) {
+function createBoxes(amount) {
+  const parsedAmount = Number(amount);
+  if (parsedAmount < 1 || parsedAmount > 100) {
     return;
   }
 
   destroyBoxes();
 
   const boxSize = 30;
-  for (let i = 0; i < amount; i += 1) {
-    const box = document.createElement('div');
-    box.style.width = `${boxSize + i * 10}px`;
-    box.style.height = `${boxSize + i * 10}px`;
-    box.style.backgroundColor = getRandomHexColor();
-    boxesContainer.appendChild(box);
+  const boxesMarkup = [];
+
+  for (let i = 0; i < parsedAmount; i += 1) {
+    const box = `<div style="width: ${boxSize + i * 10}px; height: ${
+      boxSize + i * 10}px; background-color: ${getRandomHexColor()};"></div>`;
+    boxesMarkup.push(box);
   }
 
+  boxesContainer.innerHTML = boxesMarkup.join('');
   input.value = '';
 }
 
